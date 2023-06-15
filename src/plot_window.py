@@ -27,7 +27,6 @@ class Plot(ctk.CTk):
         :param t: значения переменной t
         :param a: параметр a дифференциального уравнения
         '''
-
         super().__init__(fg_color, **kwargs)
        
         # Настраиваем окно 
@@ -48,7 +47,7 @@ class Plot(ctk.CTk):
         with plt.style.context('dark_background'):
             self.figure = Figure(figsize=(7, 7), dpi=100)
             self.plot = self.figure.add_subplot()
-            self.plot.plot(self.sol[:, 0], self.sol[:, 1], color='green')
+            self.plot.plot(self.sol[:, 0], self.sol[:, 1], color='green', linewidth=3)
 
         # Создаем виджет и размещаем в окне
         self.canvas = FigureCanvasTkAgg(self.figure, self)
@@ -60,9 +59,7 @@ class Plot(ctk.CTk):
         self.mainloop()
 
     def animate(self, i):
-        '''
-        Метод дорисовки графика графика
-        '''
+        '''Метод дорисовки графика графика'''
         if self.mode:
             # Запоминаем последнюю точку
             y0 = self.sol[-1]
@@ -71,7 +68,8 @@ class Plot(ctk.CTk):
             self.sol = rungekutta(y0, self.func, self.t, self.a)
 
             # Отображаем продолжение траектории
-            self.plot.plot(self.sol[:, 0], self.sol[:, 1], color='green')
+            self.plot.plot(self.sol[:, 0], self.sol[:, 1], color='green', linewidth=3)
 
     def on_click(self, event):
+        '''Триггер на нажатие левой кнопки мыши'''
         self.mode = not self.mode

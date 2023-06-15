@@ -46,4 +46,4 @@ def second_ode(y0: np.ndarray, t: np.ndarray, *args) -> np.ndarray:
     a = args[0]
 
     return np.array([y, 
-                     (1 + y) ** 3 / y * ((a * y) / (1 + y) * (1 + y ** 2) + u)])
+                    (1 + y) ** 3 / y * ((a * y) / (1 + y) * (1 + y ** 2) + u)])

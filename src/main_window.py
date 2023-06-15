@@ -10,7 +10,14 @@ ctk.set_default_color_theme("green")
 
 
 class App(ctk.CTk):
+    '''
+    Главное окно приложения
+    
+    В нем можно задать параметры и начать отображение траекторий
+    '''
+
     def __init__(self, fg_color: str | Tuple[str, str] | None = None, **kwargs):
+        '''Конструктор окна'''
         super().__init__(fg_color, **kwargs)
         
         # Настраиваем окно
@@ -123,19 +130,19 @@ class App(ctk.CTk):
     def on_second_button_click(self):
         '''
         Триггер на нажатие кнопки отобразить
-        для уравнения Ван-Дер Поля
+        для второго уравнения
         '''
 
         y0 = np.array([self.f.get(), self.f_prime.get()])
         func = second_ode
-        t = np.linspace(0, 0.1, 10)
+        t = np.linspace(0, 0.0001, 10)
         a = (self.second_a.get(),)
         Plot(y0, func, t, a)
 
     def validate_float_input(self, val):
         '''
         Функция проверяет возможность конвертирования
-        строки в число
+        строки в число с плавающей точкой
         '''
         if val != None and val != '' and val != '-':
             try:
