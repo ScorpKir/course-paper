@@ -16,7 +16,7 @@
 
 Посмотрим на результаты с разными значениями параметра $\mu$
 
-![Imgur](https://i.imgur.com/VnsE5hx.png)
+[![Imgur](https://i.imgur.com/VnsE5hx.png)]
 ![Imgur](https://i.imgur.com/cte925n.png)
 ![Imgur](https://i.imgur.com/evbeURY.png)
 ![Imgur](https://i.imgur.com/dwyrQ1i.png)
