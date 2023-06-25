@@ -4,22 +4,21 @@
 Дано уравнение Ван-дер Поля:
  $$g''- \mu \cdot (1 - g^2) \cdot g + g = 0$$
 и начальные условия:
-$$\begin{cases} g(0) = \alpha \\g'(0) = \beta\end{cases}$$
+$$g(0) = \alpha \\g'(0) = \beta$$
 Необходимо реализовать программу, которая принимает начальные значения $$\alpha$$ и $$\beta$$, параметр $$\mu$$ и отображает анимацию движения фазовой траектории этого уравнения.
 
 ### Результаты
 
 Зададим следующие начальные условия
- $$\begin{cases} g(0) = 0\\g'(0) = 0.01 \end{cases}$$
+ $$g(0) = 0\\g'(0) = 0.01$$
 
 Посмотрим на результаты с разными значениями параметра $$\mu$$
 
-<p align=center>
-    <image src="https://imgur.com/VnsE5hx" alt="Значение параметра: 0.5">
-    <image src="https://imgur.com/cte925n" alt="Значение параметра: 2">
-    <image src="https://imgur.com/evbeURY" alt="Значение параметра: 5">
-    <image src="https://imgur.com/dwyrQ1i" alt="Значение параметра: 8">
-</p>
+<image src="https://imgur.com/VnsE5hx" alt="Значение параметра: 0.5">
+<image src="https://imgur.com/cte925n" alt="Значение параметра: 2">
+<image src="https://imgur.com/evbeURY" alt="Значение параметра: 5">
+<image src="https://imgur.com/dwyrQ1i" alt="Значение параметра: 8">
+
 
 ### Установка 
 
