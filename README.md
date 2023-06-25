@@ -16,6 +16,8 @@
 
 Посмотрим на результаты с разными значениями параметра $\mu$
 
+![image](https://github.com/ScorpKir/course-paper/assets/77200268/777f7625-55c7-405e-b8ef-0c2424663720)
+
 [![Imgur](https://i.imgur.com/VnsE5hx.png)]
 ![Imgur](https://i.imgur.com/cte925n.png)
 ![Imgur](https://i.imgur.com/evbeURY.png)
