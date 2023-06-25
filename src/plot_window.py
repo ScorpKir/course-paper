@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, Union
+from typing import Tuple
 import customtkinter as ctk
 import numpy as np
 from matplotlib import pyplot as plt
@@ -44,10 +44,10 @@ class Plot(ctk.CTk):
         self.sol = rungekutta(y0, func, t, a)
         
         # Отображаем фазовую траекторию на графике
-        with plt.style.context('dark_background'):
-            self.figure = Figure(figsize=(7, 7), dpi=100)
-            self.plot = self.figure.add_subplot()
-            self.plot.plot(self.sol[:, 0], self.sol[:, 1], color='green', linewidth=3)
+        #with plt.style.context('dark_background'):
+        self.figure = Figure(figsize=(7, 7), dpi=100)
+        self.plot = self.figure.add_subplot()
+        self.plot.plot(self.sol[:, 0], self.sol[:, 1], color='green', linewidth=3)
 
         # Создаем виджет и размещаем в окне
         self.canvas = FigureCanvasTkAgg(self.figure, self)

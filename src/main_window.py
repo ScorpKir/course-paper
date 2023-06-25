@@ -1,9 +1,9 @@
-from typing import Optional, Tuple, Union
+from typing import Tuple
 import numpy as np
 import tkinter as tk
 import customtkinter as ctk
 from plot_window import Plot
-from odestorage import van_der_pol, second_ode
+from odestorage import van_der_pol
 
 ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("green")
@@ -22,33 +22,36 @@ class App(ctk.CTk):
         
         # Настраиваем окно
         self.title("Фазовые портреты")
-        self.length = 900
-        self.height = 400
-        self.geometry(f"{self.length}x{self.height}")
+        self.LENGTH = 900
+        self.HEIGHT = 400
+        self.geometry(f"{self.LENGTH}x{self.HEIGHT}")
         
         # Настраиваем сетку
-        self.rowconfigure([i for i in range(6)], weight=1)
-        self.columnconfigure([i for i in range(4)], weight=1)
+        self.ROWS_COUNT = 3
+        self.COLUMNS_COUNT = 4
+        self.WEIGHT = 1
+        self.rowconfigure([i for i in range(self.ROWS_COUNT)], weight=self.WEIGHT)
+        self.columnconfigure([i for i in range(self.COLUMNS_COUNT)], weight=self.WEIGHT)
         
         # Задаем переменные привязанные к полям ввода
-        self.g = tk.DoubleVar(self, value=0)
-        self.g_prime = tk.DoubleVar(self, value=0.01)
-        self.first_a = tk.DoubleVar(self, value=0.5)
-        
-        self.f = tk.DoubleVar(self, value=0)
-        self.f_prime = tk.DoubleVar(self, value=0.01)
-        self.second_a = tk.DoubleVar(self, value=0.5)
+        self.DEFAULT_G_VALUE = 0
+        self.DEFAULT_G_PRIME_VALUE = 0.01
+        self.DEFAULT_A_VALUE = 0.5
+        self.g = tk.DoubleVar(self, value=self.DEFAULT_G_VALUE)
+        self.g_prime = tk.DoubleVar(self, value=self.DEFAULT_G_PRIME_VALUE)
+        self.a = tk.DoubleVar(self, value=self.DEFAULT_A_VALUE)
         
         # Задаем команду для валидации вещественных чисел
         self.cmd = (self.register(self.validate_float_input), '%P')
 
         # Заголовок зоны уравнения Ван-Дер Поля
-        self.first_ode_label = ctk.CTkLabel(self, text='Уравнение Ван дер Поля',
-                                            font=('Colibri', 25))
-        self.first_ode_label.grid(row=0, column=0, columnspan=4)
+        self.DEFAULT_FONT = ('Colibri', 25)
+        self.ode_label = ctk.CTkLabel(self, text='Уравнение Ван дер Поля',
+                                            font=self.DEFAULT_FONT)
+        self.ode_label.grid(row=0, column=0, columnspan=4)
 
         # Поле ввода g(0)
-        self.g_label = ctk.CTkLabel(self, text='g(0):', font=('Colibri', 25))
+        self.g_label = ctk.CTkLabel(self, text='g(0):', font=self.DEFAULT_FONT)
         self.g_label.grid(row=1, column=0)
         self.g_entry = ctk.CTkEntry(self, textvariable=self.g, validate='key',
                                     validatecommand=self.cmd)
@@ -56,7 +59,7 @@ class App(ctk.CTk):
 
         # Поле ввода g'(0)
         self.g_prime_label = ctk.CTkLabel(self, text='g\'(0):', 
-                                          font=('Colibri', 25))
+                                          font=self.DEFAULT_FONT)
         self.g_prime_label.grid(row=1, column=1)
         self.g_prime_entry = ctk.CTkEntry(self, textvariable=self.g_prime, 
                                           validate='key',
@@ -64,53 +67,18 @@ class App(ctk.CTk):
         self.g_prime_entry.grid(row=2, column=1)
 
         # Поле ввожа паоаметра a для уравнения Ван-Дер Поля
-        self.first_ode_a_label = ctk.CTkLabel(self, text='a:', 
-                                              font=('Colibri', 25))
-        self.first_ode_a_label.grid(row=1, column=2)
-        self.g_a_entry = ctk.CTkEntry(self, textvariable=self.first_a,
+        self.a_label = ctk.CTkLabel(self, text='a:', 
+                                              font=self.DEFAULT_FONT)
+        self.a_label.grid(row=1, column=2)
+        self.a_entry = ctk.CTkEntry(self, textvariable=self.a,
                                       validate='key', 
                                       validatecommand=self.cmd)
-        self.g_a_entry.grid(row=2, column=2)
+        self.a_entry.grid(row=2, column=2)
 
         # Кнопка отображения фазовой траектории уравнения Ван-Дер Поля
-        self.g_button = ctk.CTkButton(self, text='Отобразить',
+        self.button = ctk.CTkButton(self, text='Отобразить',
                                       command=self.on_first_button_click)
-        self.g_button.grid(row=2, column=3)
-        
-        # Заголовок зоны второго уравнения
-        self.second_ode_label = ctk.CTkLabel(self, text='Второе уравнение', 
-                                             font=('Colibri', 25))
-        self.second_ode_label.grid(row=3, column=0, columnspan=4)
-        
-        # Поле ввода f(0) для второго уравнения
-        self.f_label = ctk.CTkLabel(self, text='f(0)', font=('Colibri', 25))
-        self.f_label.grid(row=4, column=0)
-        self.f_entry = ctk.CTkEntry(self, textvariable=self.f, validate='key',
-                                    validatecommand=self.cmd)
-        self.f_entry.grid(row=5, column=0)
-
-        # Поле ввода f'(0) для второго уравнения
-        self.f_prime_label = ctk.CTkLabel(self, text='f\'(0):', 
-                                          font=('Colibri', 25))
-        self.f_prime_label.grid(row=4, column=1)
-        self.f_prime_entry = ctk.CTkEntry(self, textvariable=self.f_prime,
-                                          validate='key',
-                                          validatecommand=self.cmd)
-        self.f_prime_entry.grid(row=5, column=1)
-
-        # Поле ввода a для второго уравнения
-        self.second_ode_a_label = ctk.CTkLabel(self, text='a:', 
-                                               font=('Colibri', 25))
-        self.second_ode_a_label.grid(row=4, column=2)
-        self.f_a_entry = ctk.CTkEntry(self, textvariable=self.second_a,
-                                      validate='key',
-                                      validatecommand=self.cmd)
-        self.f_a_entry.grid(row=5, column=2)
-
-        # Кнопка отображения фазовой траектории второго уравнения
-        self.f_button = ctk.CTkButton(self, text='Отобразить',
-                                      command = self.on_second_button_click)
-        self.f_button.grid(row=5, column=3)
+        self.button.grid(row=2, column=3)
         
         # запускаем приложение
         self.mainloop()
@@ -122,27 +90,18 @@ class App(ctk.CTk):
         '''
 
         y0 = np.array([self.g.get(), self.g_prime.get()])
-        func = van_der_pol
         t = np.linspace(0, 1, 100)
-        a = (self.first_a.get(),)
-        Plot(y0, func, t, a)
+        a = (self.a.get(),)
+        Plot(y0, van_der_pol, t, a)
     
-    def on_second_button_click(self):
-        '''
-        Триггер на нажатие кнопки отобразить
-        для второго уравнения
-        '''
-
-        y0 = np.array([self.f.get(), self.f_prime.get()])
-        func = second_ode
-        t = np.linspace(0, 0.0001, 10)
-        a = (self.second_a.get(),)
-        Plot(y0, func, t, a)
-
     def validate_float_input(self, val):
         '''
         Функция проверяет возможность конвертирования
         строки в число с плавающей точкой
+        
+        :param val: текстовое значение для валидации
+        :result: логическое значение, обозначающее 
+                 валидность строки
         '''
         if val != None and val != '' and val != '-':
             try:
